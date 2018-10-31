@@ -45,6 +45,7 @@ public class PdfController {
         variables.put("title","测试预览ASGX!");
         listVars.add(variables);
 
+        //pdfPage.ftl myPdf.ftl
         PdfUtils.preview(configurer,"pdfPage.ftl",listVars,response);
     }
 

@@ -31,3 +31,23 @@ table tr:nth-child(even) {
 #input1{
     border-bottom: 1px solid #000000;
 }
+
+.content{
+    width: 960px;
+    margin: 100px auto;
+    border-top: 1px solid black;
+    position: relative;
+}
+
+.content .title{
+    width: 320px;
+    height: 50px;
+    background: #FFFFFF;
+    text-align: center;
+    line-height: 50px;
+    font-size: 25px;
+    color: #666666;
+    position: absolute;
+    top: -25px;
+    left: 320px;
+}
