@@ -42,7 +42,7 @@ public class PdfUtils {
      * @param variables    freemarker模板参数
      * @return Document
      */
-    private static Document generateDoc(FreeMarkerConfigurer configurer, String templateName, Map<String, Object> variables)  {
+    private static Document generateDoc(FreeMarkerConfigurer configurer, String templateName, Map<String, Object> variables) {
         Template tp;
         try {
             tp = configurer.getConfiguration().getTemplate(templateName);
@@ -52,7 +52,7 @@ public class PdfUtils {
         }
 
         StringWriter stringWriter = new StringWriter();
-        try(BufferedWriter writer = new BufferedWriter(stringWriter)) {
+        try (BufferedWriter writer = new BufferedWriter(stringWriter)) {
             try {
                 tp.process(variables, writer);
                 writer.flush();
@@ -63,8 +63,9 @@ public class PdfUtils {
             }
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             return builder.parse(new ByteArrayInputStream(stringWriter.toString().getBytes()));
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
+            LOGGER.error("前端错误:", e);
             return null;
         }
     }
@@ -86,6 +87,7 @@ public class PdfUtils {
 
         ITextRenderer renderer = new ITextRenderer();
         Document doc = generateDoc(configurer, templateName, listVars.get(0));
+        //项目url
         renderer.setDocument(doc, null);
         //设置字符集(宋体),此处必须与模板中的<body style="font-family: SimSun">一致,区分大小写,不能写成汉字"宋体"
         ITextFontResolver fontResolver = renderer.getFontResolver();
@@ -98,6 +100,7 @@ public class PdfUtils {
         //(注意:此处从1开始,因为第0是创建pdf,从1往后则向pdf中追加内容)
         for (int i = 1; i < listVars.size(); i++) {
             Document docAppend = generateDoc(configurer, templateName, listVars.get(i));
+
             renderer.setDocument(docAppend, null);
             renderer.layout();
             renderer.writeNextDocument(); //写下一个pdf页面
